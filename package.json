@@ -1,0 +1,12 @@
+{
+  "name": "realtime-messenger-backend",
+  "version": "1.0.0",
+  "description": "A scalable real-time chat system built to deliver instant messaging using persistent connections, supporting low-latency communication, message delivery, and user presence.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
