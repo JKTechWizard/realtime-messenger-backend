@@ -1,6 +1,7 @@
 import http from "http";
 import app from "./app";
 
+
 // import { initSocket } from "./sockets/chat.socket";
 import { connectDB } from "./config/db.config";
 
@@ -10,7 +11,8 @@ const server = http.createServer(app);
 
 // initSocket(server);
 
-// connectDB();
+ connectDB();
+
 
 server.listen(PORT, () => {
  console.log(`Server running on ${PORT}`);
