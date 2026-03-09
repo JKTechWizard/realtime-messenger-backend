@@ -4,9 +4,27 @@
   "description": "A scalable real-time chat system built to deliver instant messaging using persistent connections, supporting low-latency communication, message delivery, and user presence.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon src/server.ts"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cors": "^2.8.6",
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1",
+    "http": "^0.0.1-security",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^9.2.4",
+    "nodemon": "^3.1.14",
+    "socket.io": "^4.8.3"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/node": "^25.3.5",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.9.3"
+  }
 }
