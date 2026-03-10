@@ -4,17 +4,15 @@ import jwt from 'jsonwebtoken';
 import { userRepository } from '../repositories/user.repository';
 import config from '../../../shared/config/env';
 import { ConflictError, NotFoundError, UnauthorizedError } from '../../../shared/utils/AppError';
-import { SignupDto, LoginDto, AuthTokenResponse, UserResponse } from '../types';
-import { IUser } from '../models/User.model';
+import { SignupDto, LoginDto, AuthTokenResponse, UserResponse, IUserLean } from '../types';
 import logger from '../../../shared/utils/logger';
 
-// ── Helpers ──────────────────────────────────────────────
-
-const toUserResponse = (user: IUser): UserResponse => ({
-  id:        String(user._id),
+// The service layer contains all business logic and orchestrates calls to repositories.
+const toUserResponse = (user: IUserLean): UserResponse => ({
+  id: String(user._id),
   firstName: user.firstName,
-  lastName:  user.lastName,
-  email:     user.email,
+  lastName: user.lastName,
+  email: user.email,
   createdAt: user.createdAt.toISOString(),
 });
 
@@ -22,8 +20,6 @@ const signToken = (userId: string, email: string): string =>
   jwt.sign({ userId, email }, config.jwt.secret, {
     expiresIn: config.jwt.expiresIn,
   } as jwt.SignOptions);
-
-// ── Service ──────────────────────────────────────────────
 
 export const authService = {
   async signup(dto: SignupDto): Promise<AuthTokenResponse> {
@@ -34,15 +30,15 @@ export const authService = {
 
     const user = await userRepository.create({
       firstName: dto.firstName.trim(),
-      lastName:  dto.lastName.trim(),
-      email:     dto.email.toLowerCase(),
-      password:  hashedPassword,
+      lastName: dto.lastName.trim(),
+      email: dto.email.toLowerCase(),
+      password: hashedPassword,
     });
 
     logger.info('User registered', { userId: String(user._id) });
 
     return {
-      user:  toUserResponse(user),
+      user: toUserResponse(user),
       token: signToken(String(user._id), user.email),
     };
   },
@@ -58,7 +54,7 @@ export const authService = {
     logger.info('User logged in', { userId: String(user._id) });
 
     return {
-      user:  toUserResponse(user),
+      user: toUserResponse(user),
       token: signToken(String(user._id), user.email),
     };
   },

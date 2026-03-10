@@ -1,5 +1,7 @@
 // src/features/auth/types/index.ts
 
+import mongoose from "mongoose";
+
 export interface SignupDto {
   firstName: string;
   lastName: string;
@@ -23,4 +25,14 @@ export interface UserResponse {
 export interface AuthTokenResponse {
   user: UserResponse;
   token: string;
+}
+
+export interface IUserLean {
+  _id: mongoose.Types.ObjectId;
+  firstName: string;
+  lastName: string;
+  email: string;
+  password?: string;
+  createdAt: Date;
+  updatedAt: Date;
 }

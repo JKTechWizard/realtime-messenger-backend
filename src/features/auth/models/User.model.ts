@@ -13,7 +13,7 @@ export interface IUser extends Document {
   updatedAt: Date;
 }
 
-// ── Schema ────────────────────────────────────────────────
+// ── Schema
 
 const UserSchema = new Schema<IUser>(
   {

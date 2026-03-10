@@ -1,5 +1,6 @@
 // src/features/auth/repositories/user.repository.ts
 import UserModel, { IUser } from '../models/User.model';
+import { IUserLean } from '../types';
 
 // The repository is the ONLY place in the codebase that imports a Mongoose model.
 // All queries are encapsulated here. Services never call mongoose directly.
@@ -25,11 +26,11 @@ export const userRepository = {
     lastName: string;
     email: string;
     password: string;
-  }): Promise<IUser> {
+  }): Promise<IUserLean> {
     const user = await UserModel.create(data);
     // Return without password
     const { password: _pw, ...safe } = user.toObject();
-    return safe as IUser;
+    return safe as IUserLean;
   },
 
   async existsByEmail(email: string): Promise<boolean> {
