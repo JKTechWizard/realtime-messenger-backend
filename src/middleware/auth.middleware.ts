@@ -1,6 +1,5 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
-import { env } from "../config/env";
 
 interface JwtPayload {
   userId: string;
@@ -21,6 +20,7 @@ export const authMiddleware = (
 
     if (!authHeader || typeof authHeader !== "string") {
       return res.status(401).json({
+        success: false,
         message: "Authorization header missing",
       });
     }
@@ -30,11 +30,15 @@ export const authMiddleware = (
 
     if (!token) {
       return res.status(401).json({
+        success: false,
         message: "Token missing",
       });
     }
 
-    const decoded = jwt.verify(token, env.jwtSecret) as JwtPayload;
+    const decoded = jwt.verify(
+      token,
+      process.env.JWT_SECRET as string,
+    ) as JwtPayload;
 
     // attach user info to request
     req.user = decoded;
@@ -42,6 +46,7 @@ export const authMiddleware = (
     next();
   } catch (error) {
     return res.status(401).json({
+      success: false,
       message: "Invalid or expired token",
     });
   }
