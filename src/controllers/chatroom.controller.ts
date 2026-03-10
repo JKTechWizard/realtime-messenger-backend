@@ -103,3 +103,61 @@ export const getChatRoomById = async (req: Request, res: Response) => {
     });
   }
 };
+
+/**
+ * Join Chat Room
+ */
+
+export const joinChatRoom = async (req: Request, res: Response) => {
+  try {
+    const roomId = typeof req.params.roomId === "string" ? req.params.roomId : req.params.roomId?.[0];
+    const user = (req as any).user;
+    const userId = user?.userId;
+
+    if (!roomId || !mongoose.Types.ObjectId.isValid(roomId)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid room id",
+      });
+    }
+
+    const chatRoom = await ChatroomModel.findById(roomId);
+
+    if (!chatRoom) {
+      return res.status(404).json({
+        success: false,
+        message: "Chat room not found",
+      });
+    }
+
+    // Check if user already joined
+   const updatedRoom = await ChatroomModel.findOneAndUpdate(
+     { _id: roomId, participants: { $ne: userId } },
+     { $addToSet: { participants: userId } },
+     { new: true },
+   );
+
+   if (!updatedRoom) {
+     return res.status(400).json({
+       success: false,
+       message: "User already joined this room",
+     });
+   }
+
+    await ChatroomModel.findByIdAndUpdate(roomId, {
+      $addToSet: { participants: userId },
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: "Successfully joined the chat room",
+    });
+  } catch (error) {
+    console.error("Join Chat Room Error:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Failed to join chat room",
+    });
+  }
+};
