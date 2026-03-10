@@ -3,9 +3,6 @@ import UserModel from "../models/User.model";
 import { login, signup } from "../controllers/auth.controller";
 const router = Router();
 
-router.get("/", (req, res) => {
-  res.send("Hello World!");
-});
 
 router.post("/signup", signup);
 
